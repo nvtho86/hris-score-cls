@@ -1,25 +1,36 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Group } from '../groups/group.entity';
+import { Organization } from '../organizations/organization.entity';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   username: string;
+
+  @Column()
+  email: string;
 
   @Column()
   password: string;
 
-  @Column({ unique: true })
-  email: string;
-
   @Column()
-  role: string;
+  full_name: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @ManyToOne(() => Group, group => group.users)
+  @JoinColumn({ name: 'group_id' })
+  group: Group;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  
+  @ManyToOne(() => Organization)
+  @JoinColumn({ name: 'org_id' })
+  organization: Organization;
 }
