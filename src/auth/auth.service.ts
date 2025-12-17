@@ -12,6 +12,7 @@ export class AuthService {
     ) { }
 
     async login(username: string, password: string) {
+        console.log(username)
         const user = await this.usersService.findByUsername(username);
 
         if (!user) {
