@@ -2,19 +2,29 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { Title } from '../titles/title.entity';
 
-@Entity('organization_structure')
+@Entity('organizations')
 export class Organization {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 255 })
   name: string;
 
-  @ManyToOne(() => Organization, { nullable: true })
-  @JoinColumn({ name: 'parent_id' })
-  parent: Organization;
+  @Column({ nullable: true })
+  code: string;
+
+  @OneToMany(() => Title, (title) => title.organization)
+  titles: Title[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

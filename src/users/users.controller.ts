@@ -1,18 +1,18 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard) // 🔥 PHẢI LOGIN
+@UseGuards(JwtAuthGuard)
 export class UsersController {
-  // constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return "Users API OK";
-  }
 
   @Get('me')
   getProfile(@Req() req) {
-    return req.user;
+    console.log('HIT /users/me');
+    console.log(req.headers);
+    console.log(req.user);
+    return {
+      message: 'OK',
+      user: req.user, // lấy từ JwtStrategy.validate()
+    };
   }
 }

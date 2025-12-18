@@ -3,16 +3,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { Group } from '../groups/group.entity';
 import { Organization } from '../organizations/organization.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
+console.log('-------------------------------------------');
 console.log('DB_HOST:', process.env.DB_HOST);
+console.log('-------------------------------------------');
 @Module({
+  
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mssql', //'mssql',
-      host: '192.168.37.58', //process.env.DB_HOST,
-      port: 1433, //Number(process.env.DB_PORT),
-      username: 'sa', //process.env.DB_USER,
-      password: 'SupportHRIS@2025', //process.env.DB_PASS,
-      database: 'HRIS_SCORE', //process.env.DB_NAME,
+      type: 'mssql',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
       extra: {
         trustServerCertificate: true, // Chấp nhận chứng chỉ tự ký (self-signed)
         Encrypt: true,                // Thường đi kèm với việc bật mã hóa

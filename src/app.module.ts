@@ -11,6 +11,9 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 // import { CoursesModule } from './courses/courses.module';
 // import { LessonsModule } from './lessons/lessons.module';
 // import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { UserOrganizationController } from './user-organization/user-organization.controller';
+import { TitleController } from './title/title.controller';
+import { TitlesController } from './titles/titles.controller';
 
 @Module({
   imports: [
@@ -23,10 +26,12 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     // LessonsModule,
     // EnrollmentsModule,
   ],
-  controllers: [AppController], // 🔥 CHỈ AppController
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: JwtAuthGuard, // 🔥 TOÀN HỆ THỐNG CẦN LOGIN
-  }],
+  controllers: [AppController, UserOrganizationController, TitleController, TitlesController], // 🔥 CHỈ AppController
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard, // 🔥 TOÀN HỆ THỐNG CẦN LOGIN
+    }
+  ],
 })
 export class AppModule { }
