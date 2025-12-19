@@ -2,14 +2,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from 'typeorm';
-import { Organization } from '../organizations/organization.entity';
-import { UserOrganization } from '../user-organization/user-organization.controller.entity';
+
 
 @Entity('titles')
 export class Title {
@@ -22,29 +18,10 @@ export class Title {
   @Column({ length: 255 })
   name: string;
 
-  @Column({ type: 'text', nullable: true })
-  description: string;
-
-  @ManyToOne(() => Organization, (org) => org.titles)
-  @JoinColumn({ name: 'organization_id' })
-  organization: Organization;
-
-  @Column({ default: 1 })
-  level: number;
-
-  @Column({ default: false })
-  is_manager: boolean;
-
-  @Column({ default: true })
-  is_active: boolean;
-
-  @OneToMany(() => UserOrganization, (uo) => uo.title)
-  userOrganizations: UserOrganization[];
-
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime2' })
   updated_at: Date;
 }
 

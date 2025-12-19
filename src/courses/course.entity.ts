@@ -1,25 +1,52 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
+import { User } from '../users/user.entity';
+import { Training } from '../trainings/training.entity';
 
-@Entity()
+@Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  username: string;
+  @Column({ length: 50, unique: true })
+  code: string;
+
+  @Column({ length: 255 })
+  name: string;
+
+  @Column({ length: 255 })
+  topicName: string;
+
+  @Column('float')
+  cost: number;
 
   @Column()
-  password: string;
+  time: number;
 
-  @Column({ unique: true })
-  email: string;
+  @Column({ length: 500 })
+  link: string;
 
-  @Column()
-  role: string;
+  @Column({ default: 0 })
+  totalUserComplete: number;
 
-  @CreateDateColumn()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'owner_id' })
+  owner: User;
+
+  @OneToMany(() => Training, training => training.course)
+  trainings: Training[];
+
+  @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime2' })
   updated_at: Date;
 }

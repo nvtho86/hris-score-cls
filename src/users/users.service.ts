@@ -8,12 +8,11 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-  ) {}
+  ) { }
 
   findByUsername(username: string) {
     return this.userRepo.findOne({
-      where: { username },
-      relations: ['group'],
+      where: { username }
     });
   }
 

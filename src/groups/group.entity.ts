@@ -6,8 +6,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../users/user.entity';
+import { UserGroup } from '../user-group/user-group.entity';
 
+@Entity('groups')
 @Entity('groups')
 export class Group {
   @PrimaryGeneratedColumn()
@@ -22,15 +23,15 @@ export class Group {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @CreateDateColumn()
+  @OneToMany(() => UserGroup, ug => ug.group)
+  userGroups: UserGroup[];
+
+  @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime2' })
   updated_at: Date;
 
-  @CreateDateColumn()
+  @Column({ type: 'datetime2', nullable: true })
   deleted_at: Date;
-
-  @OneToMany(() => User, (user) => user.group)
-  users: User[];
 }

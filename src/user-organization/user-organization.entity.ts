@@ -8,8 +8,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from '../users/user.entity';
-import { Organization } from '../organizations/organization.entity';
 import { Title } from '../titles/title.entity';
+import { OrganizationStructure } from '../organization-structure/organization-structure.entity';
 
 @Entity('user_organizations')
 export class UserOrganization {
@@ -20,9 +20,9 @@ export class UserOrganization {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Organization)
+  @ManyToOne(() => OrganizationStructure)
   @JoinColumn({ name: 'organization_id' })
-  organization: Organization;
+  organization: OrganizationStructure;
 
   @ManyToOne(() => Title)
   @JoinColumn({ name: 'title_id' })
@@ -40,12 +40,13 @@ export class UserOrganization {
   @Column({ type: 'date', nullable: true })
   end_date: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime2' })
   updated_at: Date;
 }
+
 
 
 // {

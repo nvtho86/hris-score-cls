@@ -6,9 +6,14 @@ import {
   JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany
 } from 'typeorm';
-import { Group } from '../groups/group.entity';
+import { UserGroup } from '../user-group/user-group.entity';
+import { Course } from '../courses/course.entity';
+import { UserOrganization } from '../user-organization/user-organization.entity';
+import { Training } from '../trainings/training.entity';
 
+@Entity('users')
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -20,10 +25,10 @@ export class User {
   @Column({ unique: true, length: 50 })
   username: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 100 })
   email: string;
 
-  @Column()
+  @Column({ length: 255 })
   password: string;
 
   @Column({ length: 50 })
@@ -65,21 +70,25 @@ export class User {
   @Column({ type: 'simple-json', nullable: true })
   title_custom_codes: string[];
 
-  @ManyToMany(() => Group)
-  @JoinTable({
-    name: 'user_groups',
-    joinColumn: { name: 'user_id' },
-    inverseJoinColumn: { name: 'group_id' },
-  })
-  groups: Group[];
+  @OneToMany(() => UserGroup, ug => ug.user)
+  userGroups: UserGroup[];
 
-  @CreateDateColumn()
+  @OneToMany(() => UserOrganization, uo => uo.user)
+  organizations: UserOrganization[];
+
+  @OneToMany(() => Course, course => course.owner)
+  ownedCourses: Course[];
+
+  @OneToMany(() => Training, training => training.trainer)
+  trainingsTeaching: Training[];
+
+  @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'datetime2' })
   updated_at: Date;
 
-  @CreateDateColumn()
+  @Column({ type: 'datetime2', nullable: true })
   deleted_at: Date;
-
 }
+
