@@ -14,6 +14,16 @@ import { OrganizationStructureService } from './organization-structure/organizat
 import { CoursesService } from './courses/courses.service';
 import { TrainingsModule } from './trainings/trainings.module';
 import { UserTrainingsService } from './user-trainings/user-trainings.service';
+import { kafkaConfig } from './config/kafka.config';
+import { ClientsModule } from '@nestjs/microservices';
+import { EmployeeConsumer } from './employee.consumer';
+import { HrisEventPublisher } from './hris.publisher';
+
+import { ScheduleModule } from '@nestjs/schedule';
+import { KafkaProducer } from './kafka/kafka.producer';
+import { KafkaConsumer } from './kafka/kafka.consumer';
+import { HrisPoller } from './poller/hris.poller';
+import { LmsService } from './lms/lms.service';
 
 @Module({
   imports: [
@@ -22,12 +32,16 @@ import { UserTrainingsService } from './user-trainings/user-trainings.service';
     AuthModule,
     GroupsModule,
     TrainingsModule,
-    // OrganizationsModule,
-    // CoursesModule,
-    // LessonsModule,
-    // EnrollmentsModule,
+    ScheduleModule.forRoot(), // ✅ CHỈ MODULE
+    ClientsModule.register([
+      {
+        name: 'KAFKA_CLIENT',
+        ...kafkaConfig,
+      },
+    ]),
+
   ],
-  controllers: [AppController, UserOrganizationController, TitlesController], // 🔥 CHỈ AppController
+  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer], // 🔥 CHỈ AppController
   providers: [AppService,
     {
       provide: APP_GUARD,
@@ -36,7 +50,12 @@ import { UserTrainingsService } from './user-trainings/user-trainings.service';
     UserGroupService,
     OrganizationStructureService,
     CoursesService,
-    UserTrainingsService
+    UserTrainingsService,
+    HrisEventPublisher,
+    KafkaProducer,
+    KafkaConsumer,
+    HrisPoller,
+    LmsService,
   ],
 })
 export class AppModule { }
