@@ -12,7 +12,7 @@ export class HrisPoller implements OnModuleInit {
 
   constructor(private readonly producer: KafkaProducer) { }
 
-  @Cron('*/30 * * * * *')
+  @Cron('*/30 * * * * *') // chạy 30s 1 lần
   async poll() {
     const result = await hrisDb.request().query(`
       SELECT * FROM employees_sync
