@@ -1,4 +1,4 @@
-<!-- 
+
  CREATE TABLE users (
   id INT IDENTITY PRIMARY KEY,
   code NVARCHAR(50) UNIQUE NOT NULL,
@@ -128,4 +128,4 @@ CREATE TABLE trainings (
 
  INSERT INTO user_groups (user_id, group_id)
  VALUES (1, 1);
- -->
+
