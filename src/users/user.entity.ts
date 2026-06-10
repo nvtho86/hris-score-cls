@@ -2,16 +2,13 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
+  // ManyToMany,
+  // JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany
+  // OneToMany
 } from 'typeorm';
-import { UserGroup } from '../user-group/user-group.entity';
-import { Course } from '../courses/course.entity';
-import { UserOrganization } from '../user-organization/user-organization.entity';
-import { Training } from '../trainings/training.entity';
+
 
 @Entity('users')
 @Entity('users')
@@ -69,18 +66,6 @@ export class User {
 
   @Column({ type: 'simple-json', nullable: true })
   title_custom_codes: string[];
-
-  @OneToMany(() => UserGroup, ug => ug.user)
-  userGroups: UserGroup[];
-
-  @OneToMany(() => UserOrganization, uo => uo.user)
-  organizations: UserOrganization[];
-
-  @OneToMany(() => Course, course => course.owner)
-  ownedCourses: Course[];
-
-  @OneToMany(() => Training, training => training.trainer)
-  trainingsTeaching: Training[];
 
   @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;

@@ -1,14 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
-import { Group } from '../groups/group.entity';
-import { OrganizationStructure } from '../organization-structure/organization-structure.entity';
-import { Title } from '../titles/title.entity';
-import { Training } from '../trainings/training.entity';
-import { Course } from '../courses/course.entity';
-import { UserGroup } from '../user-group/user-group.entity';
-import { UserOrganization } from '../user-organization/user-organization.entity';
-import { UserTraining } from '../user-trainings/user-training.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 console.log('----------------------------------------------')
@@ -36,15 +28,7 @@ console.log('----------------------------------------------')
       // database: 'hris_score',
 
       entities: [
-        User,
-        Group,
-        OrganizationStructure,
-        Title,
-        Course,          // 🔥 BẮT BUỘC
-        Training,
-        UserGroup,
-        UserOrganization,
-        UserTraining
+        User       
       ],
       synchronize: false, // 🔥 TẮT
     }),

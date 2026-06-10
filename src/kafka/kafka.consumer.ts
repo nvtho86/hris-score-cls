@@ -1,11 +1,13 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka } from 'kafkajs';
 import { crmDb } from '../database/crm.db';
-import { LmsService } from '../lms/lms.service';
+// import { LmsService } from '../lms/lms.service';
+import { StaffSyncService } from '../integrations/services/staff-sync.service';
+
 
 @Injectable()
 export class KafkaConsumer implements OnModuleInit {
-    constructor(private readonly lmsService: LmsService) { }
+    constructor(private readonly staffService: StaffSyncService) { }
 
     async onModuleInit() {
         const kafka = new Kafka({
@@ -49,7 +51,7 @@ export class KafkaConsumer implements OnModuleInit {
                 );
 
                 // 2️⃣ Call LMS API
-                await this.lmsService.upsertUser(emp);
+                // await this.staffService.upsertUser(emp);
             },
         });
 
