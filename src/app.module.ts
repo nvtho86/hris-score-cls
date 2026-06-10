@@ -17,6 +17,7 @@ import { UserTrainingsService } from './user-trainings/user-trainings.service';
 import { kafkaConfig } from './config/kafka.config';
 import { ClientsModule } from '@nestjs/microservices';
 import { EmployeeConsumer } from './employee.consumer';
+import { StaffConsumer } from './staff.consumer';
 import { HrisEventPublisher } from './hris.publisher';
 
 import { ScheduleModule } from '@nestjs/schedule';
@@ -41,7 +42,7 @@ import { LmsService } from './lms/lms.service';
     ]),
 
   ],
-  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer], // 🔥 CHỈ AppController
+  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer, StaffConsumer], // 🔥 CHỈ AppController
   providers: [AppService,
     {
       provide: APP_GUARD,

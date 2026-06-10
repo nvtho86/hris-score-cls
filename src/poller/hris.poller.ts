@@ -31,6 +31,26 @@ export class HrisPoller implements OnModuleInit {
     }
   }
 
+  @Cron('*/30 * * * * *') // chạy 30s 1 lần
+  async pollStaff() {
+    const result = await hrisDb.request().query(`
+      SELECT * FROM Staff
+      WHERE ModifiedDate > DATEADD(second, -30, GETDATE())
+    `);
+    
+
+    for (const emp of result.recordset) {
+      await this.producer.emit('hris.staff.updated', {
+        event_id: uuid(),
+        event_type: 'STAFF_UPDATED',
+        source: 'HRIS',
+        tenant_id: 'tenant_02',
+        occurred_at: new Date().toISOString(),
+        payload: emp,
+      });
+    }
+  }
+
   // @Cron('*/30 * * * * *')
   // async poll() {
   //   const rows = await db.find({
