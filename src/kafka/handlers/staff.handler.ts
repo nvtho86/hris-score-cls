@@ -3,7 +3,6 @@ import { crmDb } from '../../database/crm.db';
 export async function handleStaff(event: any) {
 
     const emp = event.payload;
-console.log('ssssssssssssssssss'+emp.Code)
     await crmDb.query(
         `
         INSERT INTO staff
@@ -17,12 +16,14 @@ console.log('ssssssssssssssssss'+emp.Code)
             level,
             manager_code,
             manager_name,
+            start_date,
+            end_date,
             email,
             modified_date
         )
         VALUES
         (
-            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,now()
+            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,now()
         )
         ON CONFLICT (code)
         DO UPDATE SET
@@ -35,6 +36,8 @@ console.log('ssssssssssssssssss'+emp.Code)
             level = EXCLUDED.level,
             manager_code = EXCLUDED.manager_code,
             manager_name = EXCLUDED.manager_name,
+            start_date =  EXCLUDED.start_date,
+            end_date =  EXCLUDED.end_date,
             email = EXCLUDED.email,
             modified_date = now()
         `,
@@ -48,6 +51,8 @@ console.log('ssssssssssssssssss'+emp.Code)
             emp.Level,
             emp.ManagerCode,
             emp.ManagerName,
+            emp.StartDate,
+            emp.EndDate,
             emp.Email,
         ],
     );

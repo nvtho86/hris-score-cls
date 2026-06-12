@@ -7,8 +7,8 @@ export interface StaffPayload {
   level: number;
   manager_code: string;
   manager_name: string;
-  // start_date: string;
-  // end_date: string;
+  start_date: string;
+  end_date: string;
   email: string;
   // created_at: string;
   // updated_at: string;
