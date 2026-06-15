@@ -17,16 +17,15 @@ export class TrainingSyncJob {
     private readonly kafkaProducer: KafkaProducer,
   ) {}
 
-  @Cron('0 0 18 06 * *')
+  // @Cron('0 0 18 06 * *')
+  @Cron('*/30 * * * * *')
   async syncTrainingData() {
 
-    const data =
-      await this.clsApiService.getTrainingResult();
+    const result =
+      await this.clsApiService.getTrainingStudentResult();
+     
 
-    for (const item of data) {
-      console.log('-------------------------------------')
-      console.log(item)
-      console.log('-------------------------------------')
+    for (const item of result.data) {
       await this.kafkaProducer.emit(
         'training.class-result.created',
         {
@@ -37,7 +36,7 @@ export class TrainingSyncJob {
     }
 
     console.log(
-      `Published ${data.length} records`,
+      `Published ${result.data.length} records`,
     );
   }
 }

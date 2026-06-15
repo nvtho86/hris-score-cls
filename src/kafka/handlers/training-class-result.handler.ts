@@ -1,57 +1,153 @@
-import { crmDb } from '../../database/crm.db';
-import { TrainingClassResult } from '../../modules/trainning/entities/training-class-result.entity';
+import { hrisDb } from '../../database/hris.db';
+import * as sql from 'mssql';
 
 export async function handleTrainingClassResult(
   event: any,
 ) {
-  const repository =
-    crmDb.getRepository(
-      TrainingClassResult,
-    );
+  const item = event.payload;
 
-  const payload = event.payload;
+  const pool = await hrisDb.connect();
 
-  const existing =
-    await repository.findOne({
-      where: {
-        employeeCode:
-          payload.employeeCode,
-        classCode:
-          payload.classCode,
-      },
-    });
+  const exists = await pool
+    .request()
+    .input(
+      'employeeCode',
+      sql.NVarChar,
+      item.userName,
+    )
+    .input(
+      'classCode',
+      sql.NVarChar,
+      item.userCode,
+    )
+    .query(`
+      SELECT TOP 1 1
+      FROM TrainingClassResult
+      WHERE EmployeeCode = @employeeCode
+      AND ClassCode = @classCode
+    `);
 
-  if (existing) {
-    await repository.update(
-      existing.id,
-      {
-        actualLearningHours:
-          payload.actualLearningHours,
-
-        testScore:
-          payload.testScore,
-
-        surveyScore:
-          payload.surveyScore,
-
-        completionPercent:
-          payload.completionPercent,
-
-        actualDate:
-          payload.actualDate,
-      },
-    );
+  if (exists.recordset.length > 0) {
+    await pool
+      .request()
+      .input(
+        'employeeCode',
+        sql.NVarChar,
+        item.userName,
+      )
+      .input(
+        'classCode',
+        sql.NVarChar,
+        item.userCode,
+      )
+      .input(
+        'actualLearningHours',
+        sql.Decimal(18, 2),
+        5.0,
+      )
+      .input(
+        'testScore',
+        sql.Decimal(18, 2),
+        5.0,
+      )
+      .input(
+        'surveyScore',
+        sql.Decimal(18, 2),
+        4.6,
+      )
+      .input(
+        'completionPercent',
+        sql.Decimal(18, 2),
+        item.progress,
+      )
+      .input(
+        'actualDate',
+        sql.DateTime,
+        item.startDate,
+      )
+      .query(`
+        UPDATE TrainingClassResult
+        SET
+          ActualLearningHours = @actualLearningHours,
+          TestScore = @testScore,
+          SurveyScore = @surveyScore,
+          CompletionPercent = @completionPercent,
+          ActualDate = @actualDate,
+          ModifiedDate = GETDATE()
+        WHERE EmployeeCode = @employeeCode
+        AND ClassCode = @classCode
+      `);
 
     console.log(
-      'Update Training Success',
+      `Training updated: ${item.userName}`,
     );
 
     return;
   }
 
-  await repository.save(payload);
+  await pool
+    .request()
+    .input(
+      'employeeCode',
+      sql.NVarChar,
+      item.userName,
+    )
+    .input(
+      'classCode',
+      sql.NVarChar,
+      item.userCode,
+    )
+    .input(
+      'actualLearningHours',
+      sql.Decimal(18, 2),
+      5.0,
+    )
+    .input(
+      'testScore',
+      sql.Decimal(18, 2),
+      5.0,
+    )
+    .input(
+      'surveyScore',
+      sql.Decimal(18, 2),
+      4.6,
+    )
+    .input(
+      'completionPercent',
+      sql.Decimal(18, 2),
+      item.progress,
+    )
+    .input(
+      'actualDate',
+      sql.DateTime,
+      item.startDate,
+    )
+    .query(`
+      INSERT INTO TrainingClassResult
+      (
+        EmployeeCode,
+        ClassCode,
+        ActualLearningHours,
+        TestScore,
+        SurveyScore,
+        CompletionPercent,
+        ActualDate,
+        ModifiedDate
+      )
+      VALUES
+      (
+        @employeeCode,
+        @classCode,
+        @actualLearningHours,
+        @testScore,
+        @surveyScore,
+        @completionPercent,
+        @actualDate,
+        GETDATE()
+      )
+    `);
 
   console.log(
-    'Insert Training Success',
+    `Training inserted: ${item.userName}`,
   );
 }

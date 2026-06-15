@@ -11,7 +11,17 @@ export class ClsApiService {
   async getTrainingResult() {
     const response = await firstValueFrom(
       this.httpService.get(
-        'https://eapiv4.cls.vn/api/HRM/course/get-list?secretKey=f3b7c1e8a94d2f0c6e5b8a1d4c9f27ab',
+        process.env.DOMAIN_CLS+'/api/HRM/course/get-list?secretKey='+process.env.SECRET_KEY_CLS,
+      ),
+    );
+
+    return response.data;
+  }
+
+  async getTrainingStudentResult() {
+    const response = await firstValueFrom(
+      this.httpService.get(
+        process.env.DOMAIN_CLS+'/api/HRM/course/get-student-result?id=65536&secretKey='+process.env.SECRET_KEY_CLS,
       ),
     );
 

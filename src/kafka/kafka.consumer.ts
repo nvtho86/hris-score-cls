@@ -26,6 +26,10 @@ export class KafkaConsumer implements OnModuleInit {
             topic: 'hris.staff.updated',
             fromBeginning: true,
         });
+        await consumer.subscribe({
+            topic: 'training.class-result.created',
+            fromBeginning: true,
+        });
         await consumer.run({
             eachMessage: async ({ topic, message }) => {
         
