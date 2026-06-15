@@ -12,7 +12,7 @@ import { TitlesController } from './titles/titles.controller';
 import { UserGroupService } from './user-group/user-group.service';
 import { OrganizationStructureService } from './organization-structure/organization-structure.service';
 import { CoursesService } from './courses/courses.service';
-import { TrainingsModule } from './trainings/trainings.module';
+import { TrainingModule } from './modules/trainning/training.module';
 import { UserTrainingsService } from './user-trainings/user-trainings.service';
 import { kafkaConfig } from './config/kafka.config';
 import { ClientsModule } from '@nestjs/microservices';
@@ -32,7 +32,7 @@ import { LmsService } from './lms/lms.service';
     UsersModule,
     AuthModule,
     GroupsModule,
-    TrainingsModule,
+    TrainingModule,
     ScheduleModule.forRoot(), // ✅ CHỈ MODULE
     ClientsModule.register([
       {

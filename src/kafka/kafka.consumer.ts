@@ -3,6 +3,7 @@ import { Kafka } from 'kafkajs';
 import { LmsService } from '../lms/lms.service';
 import { handleEmployee } from './handlers/employee.handler';
 import { handleStaff } from './handlers/staff.handler';
+import { handleTrainingClassResult } from './handlers/training-class-result.handler';
 
 @Injectable()
 export class KafkaConsumer implements OnModuleInit {
@@ -25,9 +26,6 @@ export class KafkaConsumer implements OnModuleInit {
             topic: 'hris.staff.updated',
             fromBeginning: true,
         });
-        // console.log("-----------consumer--------------")
-        // console.log(consumer)
-        // console.log("------------consumer-------------")
         await consumer.run({
             eachMessage: async ({ topic, message }) => {
         
@@ -58,6 +56,10 @@ export class KafkaConsumer implements OnModuleInit {
                             // await this.lmsService.upsertUser(
                             //     event.payload,
                             // );
+                            break;
+
+                        case 'training.class-result.created':
+                            await handleTrainingClassResult(event);
                             break;
         
                         default:
