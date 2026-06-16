@@ -2,10 +2,10 @@ import * as sql from 'mssql';
 import * as dotenv from 'dotenv';
 
 export const hrisDb = new sql.ConnectionPool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_HOST,
-    database: process.env.DB_NAME,
+    user: process.env.DB_USER_HRIS,
+    password: process.env.DB_PASS_HRIS,
+    server: process.env.DB_HOST_HRIS,
+    database: process.env.DB_NAME_HRIS,
     options: {
         encrypt: false,
         trustServerCertificate: true,
