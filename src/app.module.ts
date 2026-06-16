@@ -19,7 +19,6 @@ import { ClientsModule } from '@nestjs/microservices';
 import { EmployeeConsumer } from './employee.consumer';
 import { StaffConsumer } from './staff.consumer';
 import { HrisEventPublisher } from './hris.publisher';
-
 import { ScheduleModule } from '@nestjs/schedule';
 import { KafkaProducer } from './kafka/kafka.producer';
 import { KafkaConsumer } from './kafka/kafka.consumer';
