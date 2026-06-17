@@ -17,8 +17,8 @@ export class TrainingSyncJob {
     private readonly kafkaProducer: KafkaProducer,
   ) {}
 
-  // @Cron('0 0 18 06 * *')
-  @Cron('*/30 * * * * *')
+  @Cron('0 0 18 06 * *')
+  // @Cron('*/30 * * * * *')
   async syncTrainingData() {
 
     const result =
