@@ -17,7 +17,7 @@ console.log('DB_HOST_HRIS:', process.env.DB_PORT_HRIS);
       database: process.env.DB_NAME_HRIS,
       extra: {
         trustServerCertificate: true, // Chấp nhận chứng chỉ tự ký (self-signed)
-        Encrypt: true,                // Thường đi kèm với việc bật mã hóa
+        Encrypt: true,                // Thường đi kèm với việc bật mã hóas
       },
 
       // type: 'postgres',
