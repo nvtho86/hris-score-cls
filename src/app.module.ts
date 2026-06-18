@@ -18,6 +18,7 @@ import { kafkaConfig } from './config/kafka.config';
 import { ClientsModule } from '@nestjs/microservices';
 import { EmployeeConsumer } from './employee.consumer';
 import { StaffConsumer } from './staff.consumer';
+import { UserConsumer } from './user.consumer';
 import { HrisEventPublisher } from './hris.publisher';
 import { ScheduleModule } from '@nestjs/schedule';
 import { KafkaProducer } from './kafka/kafka.producer';
@@ -41,7 +42,7 @@ import { LmsService } from './lms/lms.service';
     ]),
 
   ],
-  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer, StaffConsumer], // 🔥 CHỈ AppController
+  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer, StaffConsumer, UserConsumer], // 🔥 CHỈ AppController
   providers: [AppService,
     {
       provide: APP_GUARD,

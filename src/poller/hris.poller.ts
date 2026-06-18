@@ -12,7 +12,7 @@ export class HrisPoller implements OnModuleInit {
 
   constructor(private readonly producer: KafkaProducer) { }
   
-  @Cron('*/30 * * * * *') // chạy 30s 1 lần
+  @Cron('*/30 * 18 * * *') // chạy 30s 1 lần
   async poll() {
     const result = await hrisDb.request().query(`
       SELECT * FROM employees_sync
@@ -31,7 +31,7 @@ export class HrisPoller implements OnModuleInit {
     }
   }
 
-  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  @Cron('*/30 * 18 * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollStaff() {
     const result = await hrisDb.request().query(`
       SELECT * FROM Staff
@@ -43,6 +43,26 @@ export class HrisPoller implements OnModuleInit {
       await this.producer.emit('hris.staff.updated', {
         event_id: uuid(),
         event_type: 'STAFF_UPDATED',
+        source: 'HRIS',
+        tenant_id: 'tenant_02',
+        occurred_at: new Date().toISOString(),
+        payload: emp,
+      });
+    }
+  }
+
+  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  async pollUserScore() {
+    const result = await hrisDb.request().query(`
+      SELECT * FROM Staff
+      WHERE ModifiedDate > DATEADD(second, -30, GETDATE())
+    `);
+    // WHERE ModifiedDate >= DATEADD(day, -1, GETDATE()) chạy lúc 18h mỗi ngày
+
+    for (const emp of result.recordset) {
+      await this.producer.emit('hris.user.updated', {
+        event_id: uuid(),
+        event_type: 'USER_UPDATED',
         source: 'HRIS',
         tenant_id: 'tenant_02',
         occurred_at: new Date().toISOString(),

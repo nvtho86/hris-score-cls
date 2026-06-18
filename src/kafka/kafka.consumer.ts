@@ -3,6 +3,7 @@ import { Kafka } from 'kafkajs';
 import { LmsService } from '../lms/lms.service';
 import { handleEmployee } from './handlers/employee.handler';
 import { handleStaff } from './handlers/staff.handler';
+import { handleUser } from './handlers/user.handler';
 import { handleTrainingClassResult } from './handlers/training-class-result.handler';
 
 @Injectable()
@@ -28,6 +29,10 @@ export class KafkaConsumer implements OnModuleInit {
         });
         await consumer.subscribe({
             topic: 'training.class-result.created',
+            fromBeginning: true,
+        });
+        await consumer.subscribe({
+            topic: 'hris.user.updated',
             fromBeginning: true,
         });
         await consumer.run({
@@ -64,6 +69,10 @@ export class KafkaConsumer implements OnModuleInit {
 
                         case 'training.class-result.created':
                             await handleTrainingClassResult(event);
+                            break;
+
+                        case 'hris.user.updated':
+                            await handleUser(event);
                             break;
         
                         default:

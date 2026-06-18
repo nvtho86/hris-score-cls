@@ -1,13 +1,13 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import type { BaseEvent } from './events/base-event.interface';
-import type { StaffPayload } from './events/staff.event';
+import type { UserPayload } from './events/user.event';
 
 @Controller()
-export class StaffConsumer {
-  @MessagePattern('hris.staff.updated')
+export class UserConsumer {
+  @MessagePattern('hris.user.updated')
   async handleStaffUpdated(
-    @Payload() event: BaseEvent<StaffPayload>,
+    @Payload() event: BaseEvent<UserPayload>,
   ) {
     // 1️⃣ Multi-tenant filter
     if (!this.isTenantAllowed(event.tenant_id)) return;
@@ -16,7 +16,7 @@ export class StaffConsumer {
     if (await this.isProcessed(event.event_id)) return;
 
     // 3️⃣ Upsert projection DB
-    await this.upsertStaff(event);
+    await this.upsertUser(event);
 
     // 4️⃣ Mark processed
     await this.markProcessed(event.event_id);
@@ -34,7 +34,7 @@ export class StaffConsumer {
     // insert processed_events
   }
 
-  private async upsertStaff(event: BaseEvent<StaffPayload>) {
+  private async upsertUser(event: BaseEvent<UserPayload>) {
     // upsert staff projection
   }
 }
