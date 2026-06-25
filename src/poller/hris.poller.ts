@@ -31,7 +31,7 @@ export class HrisPoller implements OnModuleInit {
     }
   }
 
-  @Cron('*/30 * 18 * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollStaff() {
     const result = await hrisDb.request().query(`
       SELECT * FROM Staff
@@ -51,7 +51,7 @@ export class HrisPoller implements OnModuleInit {
     }
   }
 
-  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  @Cron('*/30 * 18 * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollUserScore() {
     const result = await hrisDb.request().query(`
       SELECT * FROM Staff

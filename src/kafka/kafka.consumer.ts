@@ -62,9 +62,9 @@ export class KafkaConsumer implements OnModuleInit {
         
                         case 'hris.staff.updated':
                             await handleStaff(event);
-                            // await this.lmsService.upsertUser(
-                            //     event.payload,
-                            // );
+                            await this.lmsService.upsertUser(
+                                event.payload,
+                            );
                             break;
 
                         case 'training.class-result.created':

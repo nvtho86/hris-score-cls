@@ -60,8 +60,8 @@ export async function handleUser(event: any) {
             1,              // $7
             1,              // $8
             1451,           // $9
-            firstName,   // $10
-            lastName,   // $11
+            firstName,      // $10
+            lastName,       // $11
             emp.Code,       // $12
             emp.Code        // $13
         ],
