@@ -60,15 +60,20 @@ export class LmsService {
             gender: true,
             phoneNumber: payload.Phone || '',
             userType: 'Học viên',
+            isAssignCourse: true,
+            isAssignTraining: true,
             orgs: [
                     {
                 orgName: org.orgName,
                 orgCode: org.orgCode,
-                parentOrgCode: org.parentOrgCode,
+                // orgName: 'SVTECH',
+                // orgCode: 'SVTECH',
+                parentOrgCode: 'SVTECH',
+
               },
             ],
-            groups: ['9382'], // Onboarding
-            statusId: 0,
+            groups: ['ONBOARDING'], // Onboarding
+            statusId: 2, //Hoạt động
             createdDate: new Date().toISOString(),
           },
         ],
