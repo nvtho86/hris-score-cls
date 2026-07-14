@@ -1,4 +1,14 @@
 import { crmDb } from '../../database/crm.db';
+import { BRANCH_MAPPING } from '../../constants/branch';
+import { DEPARTMENT_MAPPING } from '../../constants/department';
+
+export const getBranchId = (hrisId: string): number | undefined => {
+return BRANCH_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
+};
+
+export const getDepartmentId = (hrisId: string): number | undefined => {
+return DEPARTMENT_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
+};
 
 export async function handleUser(event: any) {
 
@@ -6,6 +16,9 @@ export async function handleUser(event: any) {
     const parts = emp.FullName.trim().split(/\s+/);
     const lastName = parts.shift() || '';
     const firstName = parts.join(' ');
+    const branch = getBranchId(emp.Branch);
+    const department = getDepartmentId(emp.Department);
+    
     await crmDb.query(
         `
         INSERT INTO "user"
@@ -51,19 +64,19 @@ export async function handleUser(event: any) {
             engineer_code = EXCLUDED.engineer_code
         `,
         [
-            emp.Email,      // $1
-            'hr',           // $2
-            emp.FullName,   // $3
-            63,             // $4
-            15,             // $5
-            13,             // $6
-            1,              // $7
-            1,              // $8
-            1451,           // $9
-            firstName,      // $10
-            lastName,       // $11
-            emp.Code,       // $12
-            emp.Code        // $13
+            emp.Email,      // $1 email
+            'hr',           // $2 provider
+            emp.FullName,   // $3 full_name
+            63,             // $4 job_title_id
+            15,             // $5 level_id
+            department,     // $6 department_id
+            branch,         // $7 branch_id
+            1,              // $8 status_id
+            emp.ManagerCode, // $9 manager_id
+            firstName,      // $10 first_name
+            lastName,       // $11 last_name
+            emp.Code,       // $12 official_code
+            emp.Code        // $13 engineer_code
         ],
     );
 
