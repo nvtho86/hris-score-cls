@@ -73,6 +73,9 @@ export class KafkaConsumer implements OnModuleInit {
 
                         case 'hris.user.updated':
                             await handleUser(event);
+                            await this.lmsService.upsertUser(
+                                event.payload,
+                            );
                             break;
         
                         default:

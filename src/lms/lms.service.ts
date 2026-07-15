@@ -44,6 +44,19 @@ export class LmsService {
       parentOrgCode,
     };
   }
+  // private buildOrg(payload: any) {
+  //   const branch = payload.Branch?.trim().toUpperCase();
+  //   const department = payload.Department?.trim().toUpperCase();
+  //   const team = payload.Team?.trim().toUpperCase();
+
+  //   return {
+  //     orgName: team || department,
+  //     titleName: payload.JobTitle || '',
+  //     orgCode: team ?? department ?? branch,
+  //     parentOrgCode: team ? department : branch,
+  //   };
+  // }
+
   async upsertUser(payload: any) {
     try {
       const org = this.buildOrg(payload);
@@ -64,11 +77,11 @@ export class LmsService {
             isAssignTraining: true,
             orgs: [
                     {
-                orgName: org.orgName,
+                orgName: org.orgCode,
                 orgCode: org.orgCode,
                 // orgName: 'SVTECH',
                 // orgCode: 'SVTECH',
-                parentOrgCode: 'SVTECH',
+                parentOrgCode: 'HCM_FIN',
 
               },
             ],
