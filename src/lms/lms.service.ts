@@ -77,11 +77,12 @@ export class LmsService {
             isAssignTraining: true,
             orgs: [
                     {
-                orgName: org.orgCode,
-                orgCode: org.orgCode,
+                orgName: payload.Department=='BOD'?'BOD':org.orgCode,
+                // orgCode: payload.Department=='BOD'?'BOD':org.orgCode,
                 // orgName: 'SVTECH',
                 // orgCode: 'SVTECH',
-                parentOrgCode: 'HCM_FIN',
+                // parentOrgCode: payload.Department=='BOD'?'BOD':org.parentOrgCode,
+                parentOrgName: payload.Department=='BOD'?'BOD':org.parentOrgCode,
 
               },
             ],

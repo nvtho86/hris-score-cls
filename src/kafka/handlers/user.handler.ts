@@ -1,6 +1,7 @@
 import { crmDb } from '../../database/crm.db';
 import { BRANCH_MAPPING } from '../../constants/branch';
 import { DEPARTMENT_MAPPING } from '../../constants/department';
+import { getManagerId } from './manager.handler';
 
 export const getBranchId = (hrisId: string): number | undefined => {
 return BRANCH_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
@@ -18,6 +19,7 @@ export async function handleUser(event: any) {
     const firstName = parts.join(' ');
     const branch = getBranchId(emp.Branch);
     const department = getDepartmentId(emp.Department);
+    const managerId = await getManagerId(emp.ManagerCode);
     
     await crmDb.query(
         `
@@ -72,7 +74,7 @@ export async function handleUser(event: any) {
             department,     // $6 department_id
             branch,         // $7 branch_id
             1,              // $8 status_id
-            emp.ManagerCode, // $9 manager_id
+            managerId, // $9 manager_id
             firstName,      // $10 first_name
             lastName,       // $11 last_name
             emp.Code,       // $12 official_code
