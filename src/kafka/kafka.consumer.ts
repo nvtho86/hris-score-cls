@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka } from 'kafkajs';
 import { LmsService } from '../lms/lms.service';
+import { MailService  } from '../mail/mail.service';
 import { handleEmployee } from './handlers/employee.handler';
 import { handleStaff } from './handlers/staff.handler';
 import { handleUser } from './handlers/user.handler';
@@ -76,6 +77,16 @@ export class KafkaConsumer implements OnModuleInit {
                             await this.lmsService.upsertUser(
                                 event.payload,
                             );
+                            await this.MailService.sendSyncMail({
+                                 system: "CLS",
+                                 total: 150,
+                                 success: 150,
+                                 failed: 0,
+                                 errors: [],
+                                 to: ["tho.nv@svtech.com.vn"]
+                            });
+
+   
                             break;
         
                         default:

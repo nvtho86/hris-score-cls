@@ -25,6 +25,8 @@ import { KafkaProducer } from './kafka/kafka.producer';
 import { KafkaConsumer } from './kafka/kafka.consumer';
 import { HrisPoller } from './poller/hris.poller';
 import { LmsService } from './lms/lms.service';
+import { MailService } from './mail/mail.service';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { LmsService } from './lms/lms.service';
     AuthModule,
     GroupsModule,
     TrainingModule,
+    MailModule,
     ScheduleModule.forRoot(), // ✅ CHỈ MODULE
     ClientsModule.register([
       {
@@ -57,6 +60,7 @@ import { LmsService } from './lms/lms.service';
     KafkaConsumer,
     HrisPoller,
     LmsService,
+    MailService
   ],
 })
 export class AppModule { }

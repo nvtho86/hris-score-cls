@@ -74,7 +74,7 @@ export async function handleUser(event: any) {
             department,     // $6 department_id
             branch,         // $7 branch_id
             1,              // $8 status_id
-            managerId, // $9 manager_id
+            managerId,      // $9 manager_id
             firstName,      // $10 first_name
             lastName,       // $11 last_name
             emp.Code,       // $12 official_code
