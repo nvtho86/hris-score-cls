@@ -9,7 +9,10 @@ import { handleTrainingClassResult } from './handlers/training-class-result.hand
 
 @Injectable()
 export class KafkaConsumer implements OnModuleInit {
-    constructor(private readonly lmsService: LmsService) { }
+    constructor(
+        private readonly lmsService: LmsService,
+        private readonly mailService: MailService,
+    ) { }
 
     async onModuleInit() {
         const kafka = new Kafka({
@@ -77,14 +80,14 @@ export class KafkaConsumer implements OnModuleInit {
                             await this.lmsService.upsertUser(
                                 event.payload,
                             );
-                            await this.MailService.sendSyncMail({
-                                 system: "CLS",
-                                 total: 150,
-                                 success: 150,
-                                 failed: 0,
-                                 errors: [],
-                                 to: ["tho.nv@svtech.com.vn"]
-                            });
+                            // await this.mailService.sendSyncMail({
+                            //      system: "Hris->CLS",
+                            //      total: 150,
+                            //      success: 150,
+                            //      failed: 0,
+                            //      errors: [],
+                            //      to: ["tho.nv@svtech.com.vn"]
+                            // });
 
    
                             break;
