@@ -5,15 +5,15 @@ import { LEVEL_MAPPING } from '../../constants/level';
 import { getManagerId } from './manager.handler';
 
 export const getBranchId = (hrisId: string): number | undefined => {
-return BRANCH_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
+    return BRANCH_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
 };
 
 export const getDepartmentId = (hrisId: string): number | undefined => {
-return DEPARTMENT_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
+    return DEPARTMENT_MAPPING.find(item => item.hrisId === hrisId)?.scoreId;
 };
 
 export const getLevelName = (hrisName: string): number | undefined => {
-return LEVEL_MAPPING.find(item => item.hrisName === hrisName)?.scoreId;
+    return LEVEL_MAPPING.find(item => item.hrisName === hrisName)?.scoreId;
 };
 
 export async function handleUser(event: any) {
@@ -26,7 +26,7 @@ export async function handleUser(event: any) {
     const department = getDepartmentId(emp.Department);
     const managerId = await getManagerId(emp.ManagerCode);
     const levelId = await getLevelName(emp.Level);
-    
+    const statusId = emp.IsResigned === false ? 1 : 2;
     await crmDb.query(
         `
         INSERT INTO "user"
@@ -79,7 +79,7 @@ export async function handleUser(event: any) {
             levelId,        // $5 level_id
             department,     // $6 department_id
             branch,         // $7 branch_id
-            1,              // $8 status_id
+            statusId,       // $8 status_id 0:active, 1 inactive
             managerId,      // $9 manager_id
             firstName,      // $10 first_name
             lastName,       // $11 last_name

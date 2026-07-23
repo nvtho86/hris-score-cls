@@ -1,5 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka } from 'kafkajs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class KafkaProducer implements OnModuleInit {
@@ -8,7 +10,7 @@ export class KafkaProducer implements OnModuleInit {
   async onModuleInit() {
     const kafka = new Kafka({
       clientId: 'integration-service',
-      brokers: ['localhost:9092'],
+      brokers: process.env.KAFKA_BROKERS?.split(',') || ['kafka:9092'], 
     });
 
     this.producer = kafka.producer();

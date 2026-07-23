@@ -6,6 +6,8 @@ import { handleEmployee } from './handlers/employee.handler';
 import { handleStaff } from './handlers/staff.handler';
 import { handleUser } from './handlers/user.handler';
 import { handleTrainingClassResult } from './handlers/training-class-result.handler';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class KafkaConsumer implements OnModuleInit {
@@ -17,7 +19,7 @@ export class KafkaConsumer implements OnModuleInit {
     async onModuleInit() {
         const kafka = new Kafka({
             clientId: 'integration-service',
-            brokers: ['localhost:9092'],
+            brokers: process.env.KAFKA_BROKERS?.split(',') || ['kafka:9092'], //
         });
 
         const consumer = kafka.consumer({ groupId: 'integration-group' });
@@ -61,14 +63,11 @@ export class KafkaConsumer implements OnModuleInit {
                     switch (topic) {
         
                         case 'hris.employee.updated':
-                            await handleEmployee(event);
+                            // await handleEmployee(event);
                             break;
         
                         case 'hris.staff.updated':
-                            await handleStaff(event);
-                            await this.lmsService.upsertUser(
-                                event.payload,
-                            );
+                            // await handleStaff(event);
                             break;
 
                         case 'training.class-result.created':

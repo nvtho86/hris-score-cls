@@ -1,4 +1,5 @@
 node_modules
+integrations
 dist
 .git
 .gitignore
