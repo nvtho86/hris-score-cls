@@ -8,3 +8,4 @@ export const crmUserDb = new Pool({
   password: process.env.DB_PASS_SCORE_USER,
   database: process.env.DB_NAME_SCORE_USER,
 });
+
