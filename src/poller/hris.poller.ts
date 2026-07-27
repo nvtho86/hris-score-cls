@@ -55,7 +55,7 @@ export class HrisPoller implements OnModuleInit {
   async pollUserScore() {
     const result = await hrisDb.request().query(`
       SELECT * FROM Staff
-      WHERE ModifiedDate > DATEADD(second, -30, GETDATE())
+      WHERE ModifiedDate > DATEADD(second, -30, GETDATE()) AND EndDate IS NULL OR EndDate >= '2025-01-01';
     `);
     // WHERE ModifiedDate >= DATEADD(day, -1, GETDATE()) chạy lúc 18h mỗi ngày
 
