@@ -1,0 +1,98 @@
+export const DEPARTMENT_MAPPING = [
+  {
+    hrisId: 'BOD',
+    hrisName: 'BOD',
+    scoreId: 1,
+    scoreName: 'BOD',
+  },
+  {
+    hrisId: 'Branding',
+    hrisName: 'Branding',
+    scoreId: 2,
+    scoreName: 'BRANDING',
+  },
+  {
+    hrisId: 'BL',
+    hrisName: 'BL',
+    scoreId: 3,
+    scoreName: 'Buyer - Logistics',
+  },
+  {
+    hrisId: 'FIN',
+    hrisName: 'FIN',
+    scoreId: 4,
+    scoreName: 'FIN',
+  },
+  {
+    hrisId: 'GIS',
+    hrisName: 'GIS',
+    scoreId: 5,
+    scoreName: 'GIS',
+  },
+  {
+    hrisId: 'HR-ADM',
+    hrisName: 'HR-ADM',
+    scoreId: 6,
+    scoreName: 'HR-ADM',
+  },
+  {
+    hrisId: 'NW',
+    hrisName: 'NW',
+    scoreId: 7,
+    scoreName: 'Network',
+  },
+  {
+    hrisId: 'Sys',
+    hrisName: 'Sys',
+    scoreId: 8,
+    scoreName: 'System',
+  },
+  {
+    hrisId: 'DnA',
+    hrisName: 'DnA',
+    scoreId: 9,
+    scoreName: 'DnA',
+  },
+  {
+    hrisId: 'PM',
+    hrisName: 'PM',
+    scoreId: 10,
+    scoreName: 'PM',
+  },
+  {
+    hrisId: 'QA',
+    hrisName: 'QA',
+    scoreId: 11,
+    scoreName: 'QA',
+  },
+  {
+    hrisId: 'Sales',
+    hrisName: 'Sales',
+    scoreId: 12,
+    scoreName: 'Sales',
+  },
+  {
+    hrisId: 'Sol',
+    hrisName: 'Sol',
+    scoreId: 13,
+    scoreName: 'Solution',
+  },
+  {
+    hrisId: 'Service',
+    hrisName: 'Service',
+    scoreId: 14,
+    scoreName: 'Services',
+  },
+  {
+    hrisId: 'Service',
+    hrisName: 'Service',
+    scoreId: 15,
+    scoreName: 'SDM',
+  },
+  {
+    hrisId: 'Tech',
+    hrisName: 'Tech',
+    scoreId: 16,
+    scoreName: 'TECH',
+  },
+];

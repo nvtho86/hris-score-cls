@@ -1,17 +1,37 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany  } from 'typeorm';
-import { User } from '../users/user.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { UserGroup } from '../user-group/user-group.entity';
 
+@Entity('groups')
 @Entity('groups')
 export class Group {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true, length: 50 })
   code: string;
 
-  @Column()
+  @Column({ length: 100 })
   name: string;
 
-  @OneToMany(() => User, (user) => user.group)
-  users: User[];
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @OneToMany(() => UserGroup, ug => ug.group)
+  userGroups: UserGroup[];
+
+  @CreateDateColumn({ type: 'datetime2' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'datetime2' })
+  updated_at: Date;
+
+  @Column({ type: 'datetime2', nullable: true })
+  deleted_at: Date;
 }

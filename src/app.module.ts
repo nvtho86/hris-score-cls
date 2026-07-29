@@ -7,10 +7,26 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-// import { OrganizationsModule } from './organizations/organizations.module';
-// import { CoursesModule } from './courses/courses.module';
-// import { LessonsModule } from './lessons/lessons.module';
-// import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { UserOrganizationController } from './user-organization/user-organization.controller';
+import { TitlesController } from './titles/titles.controller';
+import { UserGroupService } from './user-group/user-group.service';
+import { OrganizationStructureService } from './organization-structure/organization-structure.service';
+import { CoursesService } from './courses/courses.service';
+import { TrainingModule } from './modules/trainning/training.module';
+import { UserTrainingsService } from './user-trainings/user-trainings.service';
+import { kafkaConfig } from './config/kafka.config';
+import { ClientsModule } from '@nestjs/microservices';
+import { EmployeeConsumer } from './employee.consumer';
+import { StaffConsumer } from './staff.consumer';
+import { UserConsumer } from './user.consumer';
+import { HrisEventPublisher } from './hris.publisher';
+import { ScheduleModule } from '@nestjs/schedule';
+import { KafkaProducer } from './kafka/kafka.producer';
+import { KafkaConsumer } from './kafka/kafka.consumer';
+import { HrisPoller } from './poller/hris.poller';
+import { LmsService } from './lms/lms.service';
+import { MailService } from './mail/mail.service';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -18,15 +34,33 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     UsersModule,
     AuthModule,
     GroupsModule,
-    // OrganizationsModule,
-    // CoursesModule,
-    // LessonsModule,
-    // EnrollmentsModule,
+    TrainingModule,
+    MailModule,
+    ScheduleModule.forRoot(), // ✅ CHỈ MODULE
+    ClientsModule.register([
+      {
+        name: 'KAFKA_CLIENT',
+        ...kafkaConfig,
+      },
+    ]),
+
   ],
-  controllers: [AppController], // 🔥 CHỈ AppController
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: JwtAuthGuard, // 🔥 TOÀN HỆ THỐNG CẦN LOGIN
-  }],
+  controllers: [AppController, UserOrganizationController, TitlesController, EmployeeConsumer, StaffConsumer, UserConsumer], // 🔥 CHỈ AppController
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard, // 🔥 TOÀN HỆ THỐNG CẦN LOGIN
+    },
+    UserGroupService,
+    OrganizationStructureService,
+    CoursesService,
+    UserTrainingsService,
+    HrisEventPublisher,
+    KafkaProducer,
+    KafkaConsumer,
+    HrisPoller,
+    LmsService,
+    MailService
+  ],
 })
 export class AppModule { }

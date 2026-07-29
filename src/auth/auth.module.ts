@@ -3,23 +3,19 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     UsersModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-
+    PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'lms_secret_key',
-      signOptions: {
-        expiresIn: '1d',
-      },
+      secret: 'secret123', // 🔥 PHẢI TRÙNG JwtStrategy
+      signOptions: { expiresIn: '1d' },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [JwtModule],
+  providers: [AuthService, JwtStrategy], // 🔥 BẮT BUỘC
 })
 export class AuthModule {}
