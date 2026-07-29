@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { Group } from '../groups/group.entity';
+<<<<<<< HEAD
 import { OrganizationStructure } from '../organization-structure/organization-structure.entity';
 import { Title } from '../titles/title.entity';
 import { Training } from '../trainings/training.entity';
@@ -14,6 +15,12 @@ dotenv.config();
 console.log('----------------------------------------------')
 console.log(process.env.DB_HOST_HRIS)
 console.log('----------------------------------------------')
+=======
+import { Organization } from '../organizations/organization.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
+console.log('DB_HOST_HRIS:', process.env.DB_PORT_HRIS);
+>>>>>>> f556d79 (update config)
 @Module({
   imports: [
     TypeOrmModule.forRoot({
