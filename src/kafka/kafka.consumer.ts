@@ -76,9 +76,9 @@ export class KafkaConsumer implements OnModuleInit {
 
                         case 'hris.user.updated':
                             await handleUser(event);
-                            await this.lmsService.upsertUser(
-                                event.payload,
-                            );
+                            // await this.lmsService.upsertUser(
+                            //     event.payload,
+                            // );
                             // await this.mailService.sendSyncMail({
                             //      system: "Hris->CLS",
                             //      total: 150,

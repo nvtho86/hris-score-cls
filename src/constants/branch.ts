@@ -12,8 +12,8 @@ export const BRANCH_MAPPING = [
     scoreName: 'Hà Nội',
   },
   {
-    hrisId: 'DN',
-    hrisName: 'DN',
+    hrisId: 'DNG',
+    hrisName: 'DNG',
     scoreId: 3,
     scoreName: 'Đà Nẵng',
   },

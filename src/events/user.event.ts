@@ -1,3 +1,5 @@
+import { Int32 } from "typeorm";
+
 export interface UserPayload {
 
   email: string;
@@ -13,7 +15,7 @@ export interface UserPayload {
   updated_at: string;
   deleted_at: string;
   photoId: string;
-  statusId: string;
+  statusId: Int32;
   manager_id: string;
   social_id: string;
   first_name: string;
