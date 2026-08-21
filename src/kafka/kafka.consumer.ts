@@ -80,7 +80,8 @@ export class KafkaConsumer implements OnModuleInit {
                             //     event.payload,
                             // );
                             // await this.mailService.sendSyncMail({
-                            //      system: "Hris->CLS",
+                            //      users:event.payload,
+                            //      system: "HR->SCORE",
                             //      total: 150,
                             //      success: 150,
                             //      failed: 0,

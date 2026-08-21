@@ -26,7 +26,12 @@ export async function handleUser(event: any) {
     const department = getDepartmentId(emp.Department);
     const managerId = await getManagerId(emp.ManagerCode);
     const levelId = await getLevelId(emp.Level);
-    const statusId = emp.IsResigsned === false ? 1 : 2;
+    const statusId = emp.IsResigned === false ? 1 : 2; // 1: Active: 2=> InActive
+    console.log('===========================');
+    console.log('VALUE:', emp.IsResigned);
+    console.log('TYPE:', typeof emp.IsResigned);
+    console.log('JSON:', JSON.stringify(emp.IsResigned));
+    console.log('===========================');
     const sql = `
             INSERT INTO "user"
             (
@@ -78,19 +83,20 @@ export async function handleUser(event: any) {
                 engineer_code = EXCLUDED.engineer_code;
             `;
     const params = [
-            emp.Email,
-            'hr',
-            emp.FullName,
-            levelId,
-            department,
-            branch,
-            statusId,
-            managerId ?? null,
-            firstName,
-            lastName,
-            emp.Code,
-            emp.Code,
+            emp.Email,    // $1 email
+            'hr',         // $2 provider
+            emp.FullName, // $3 full_name
+            levelId,      // $4 level_id
+            department,   // $5 department_id
+            branch,       // $6 branch_id
+            statusId,     // $7 statusId
+            managerId ?? null, // $8 manager_id
+            firstName,         // $9 firstName
+            lastName,          // $10 lastName
+            emp.Code,          // $11 official_code
+            emp.Code,          // $12 engineer_code
         ];
+       
         params.forEach((v, i) => {
             console.log(i + 1, v, typeof v);
         });
@@ -102,3 +108,4 @@ export async function handleUser(event: any) {
 
     console.log(`User synced: ${emp.Code}`);
 }
+

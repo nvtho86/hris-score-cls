@@ -10,6 +10,7 @@ export class MailService {
   ) {}
 
   async sendSyncMail(data: {
+    users: any;
     system: string;
     to: string[];
     total: number;

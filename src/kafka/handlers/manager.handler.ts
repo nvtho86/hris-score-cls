@@ -10,9 +10,8 @@ export async function getManagerId(managerCode: string): Promise<number | null> 
     return null;
   }
   const queryUser = `
-      SELECT uth.id
+      SELECT u.id
       FROM "user" u
-      join user_transaction_history uth on uth.user_id = u.id 
       WHERE u.engineer_code = $1
       LIMIT 1
     `
