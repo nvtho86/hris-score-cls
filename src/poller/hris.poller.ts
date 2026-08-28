@@ -11,14 +11,14 @@ export class HrisPoller implements OnModuleInit {
   }
 
   constructor(private readonly producer: KafkaProducer) { }
-  
+
   @Cron('*/30 * 18 * * *') // chạy 30s 1 lần
   async poll() {
     const result = await hrisDb.request().query(`
       SELECT * FROM employees_sync
       WHERE updated_at > DATEADD(second, -30, GETDATE()) 
     `);
-       
+
     for (const emp of result.recordset) {
       await this.producer.emit('hris.employee.updated', {
         event_id: uuid(),
@@ -59,17 +59,21 @@ export class HrisPoller implements OnModuleInit {
     `);
     // WHERE ModifiedDate >= DATEADD(day, -1, GETDATE()) chạy lúc 18h mỗi ngày
     // AND EndDate IS NULL and EndDate >= '2025-01-01'
+    const users = result.recordset;
 
-    for (const emp of result.recordset) {
-      await this.producer.emit('hris.user.updated', {
-        event_id: uuid(),
-        event_type: 'USER_UPDATED',
-        source: 'HRIS',
-        tenant_id: 'tenant_02',
-        occurred_at: new Date().toISOString(),
-        payload: emp,
-      });
+    if (!users.length) {
+      console.log('[HRIS] No users to sync');
+      return;
     }
+
+    await this.producer.emit('hris.user.updated', {
+      event_id: uuid(),
+      event_type: 'USER_UPDATED',
+      source: 'HRIS',
+      tenant_id: 'tenant_02',
+      occurred_at: new Date().toISOString(),
+      payload: users,
+    });
   }
 
   // @Cron('*/30 * * * * *')

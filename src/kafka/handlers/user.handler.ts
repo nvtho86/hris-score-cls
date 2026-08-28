@@ -27,11 +27,11 @@ export async function handleUser(event: any) {
     const managerId = await getManagerId(emp.ManagerCode);
     const levelId = await getLevelId(emp.Level);
     const statusId = emp.IsResigned === false ? 1 : 2; // 1: Active: 2=> InActive
-    console.log('===========================');
-    console.log('VALUE:', emp.IsResigned);
-    console.log('TYPE:', typeof emp.IsResigned);
-    console.log('JSON:', JSON.stringify(emp.IsResigned));
-    console.log('===========================');
+    console.log('=============user score==============');
+    // console.log('VALUE:', emp.IsResigned);
+    // console.log('TYPE:', typeof emp.IsResigned);s
+    // console.log('JSON:', JSON.stringify(emp.IsResigned));
+    // console.log('==============user score=============');s
     const sql = `
             INSERT INTO "user"
             (
