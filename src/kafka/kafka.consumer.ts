@@ -95,10 +95,10 @@ export class KafkaConsumer implements OnModuleInit {
                                         `[SYNC] ${user.Code} -> SCORE START`,
                                     );
                                     // HRIS -> SCORE
-                                    await handleUser({
-                                        ...event,
-                                        payload: user,
-                                    });
+                                    // await handleUser({
+                                    //     ...event,
+                                    //     payload: user,
+                                    // });
                                     console.log(
                                         `[SYNC] ${user.Code} -> SCORE DONE`,
                                     );

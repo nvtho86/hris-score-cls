@@ -19,8 +19,8 @@ export class LmsService {
     if (!email) return '';
     const atIndex = email.indexOf('@');
     return atIndex > -1
-        ? email.substring(0, atIndex)
-        : email;
+      ? email.substring(0, atIndex)
+      : email;
   }
   private buildOrg(payload: any) {
     const branch = payload.Branch?.trim().toUpperCase();
@@ -33,8 +33,8 @@ export class LmsService {
 
     const parentOrgCode = team
       ? [branch, department]
-          .filter((x): x is string => !!x)
-          .join('_')
+        .filter((x): x is string => !!x)
+        .join('_')
       : branch;
 
     return {
@@ -59,12 +59,12 @@ export class LmsService {
 
   async upsertUser(payload: any) {
     try {
+     
       const org = this.buildOrg(payload);
       const clsPayload = {
         secretKey: '4ad8g95ba4b98ac37a1c71a74sa9a67a',
         datas: [
           {
-
             email: payload.Email,
             firstName: this.getFirstName(payload.FullName),
             lastName: this.getLastName(payload.FullName),
@@ -76,14 +76,10 @@ export class LmsService {
             isAssignCourse: true,
             isAssignTraining: true,
             orgs: [
-                    {
-                orgName: payload.Department=='BOD'?'BOD':org.orgCode,
-                // orgCode: payload.Department=='BOD'?'BOD':org.orgCode,
-                // orgName: 'SVTECH',
-                // orgCode: 'SVTECH',
-                // parentOrgCode: payload.Department=='BOD'?'BOD':org.parentOrgCode,
-                parentOrgName: payload.Department=='BOD'?'BOD':org.parentOrgCode,
-
+              {
+                orgName: payload.Department == 'BOD' ? 'BOD' : org.orgCode,
+                parentOrgName: payload.Department == 'BOD' ? 'BOD' : org.parentOrgCode,
+                titleName: org.titleName,
               },
             ],
             groups: ['ONBOARDING'], // Onboarding
