@@ -6,9 +6,6 @@ export function buildSyncMail(data: {
   failed: number;
   errors: any[];
 }) {
-  console.log('================Log Email===================');
-  console.log(data.users);
-  console.log('================Log Email===================');
 
   const successRate =
     data.total > 0

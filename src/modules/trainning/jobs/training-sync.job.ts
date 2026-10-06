@@ -15,7 +15,7 @@ export class TrainingSyncJob {
     private readonly clsApiService: ClsApiService,
 
     private readonly kafkaProducer: KafkaProducer,
-  ) {}
+  ) { }
 
   @Cron('0 0 18 06 * *')
   // @Cron('*/30 * * * * *')
@@ -23,7 +23,6 @@ export class TrainingSyncJob {
 
     const result =
       await this.clsApiService.getTrainingStudentResult();
-     
 
     for (const item of result.data) {
       await this.kafkaProducer.emit(

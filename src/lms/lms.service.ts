@@ -44,19 +44,7 @@ export class LmsService {
       parentOrgCode,
     };
   }
-  // private buildOrg(payload: any) {
-  //   const branch = payload.Branch?.trim().toUpperCase();
-  //   const department = payload.Department?.trim().toUpperCase();
-  //   const team = payload.Team?.trim().toUpperCase();
-
-  //   return {
-  //     orgName: team || department,
-  //     titleName: payload.JobTitle || '',
-  //     orgCode: team ?? department ?? branch,
-  //     parentOrgCode: team ? department : branch,
-  //   };
-  // }
-
+ 
   async upsertUser(payload: any) {
     try {
      
@@ -83,7 +71,7 @@ export class LmsService {
               },
             ],
             groups: ['ONBOARDING'], // Onboarding
-            statusId: 2, //Hoạt động
+            statusId: payload.IsResigned==0?2:5, // 1: Đang chờ duyệt, 2 Hoạt động, 3 Không hoạt động, 4 Đã xóa, 5 Đã nghỉ
             createdDate: new Date().toISOString(),
           },
         ],
