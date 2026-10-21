@@ -91,17 +91,13 @@ export class KafkaConsumer implements OnModuleInit {
                                 );
 
                                 try {
-                                    console.log(
-                                        `[SYNC] ${user.Code} -> SCORE START`,
-                                    );
+                                    
                                     // HRIS -> SCORE
                                     // await handleUser({
                                     //     ...event,
                                     //     payload: user,
                                     // });
-                                    console.log(
-                                        `[SYNC] ${user.Code} -> SCORE DONE`,
-                                    );
+                                   
                                     console.log(
                                         `[SYNC] ${user.Code} -> LMS START`,
                                     );
@@ -137,12 +133,13 @@ export class KafkaConsumer implements OnModuleInit {
 
                             await this.mailService.sendSyncMail({
                                 users,
-                                system: 'HR->SCORE, HR->LMS',
+                                system: 'HRIS->SCORE, HRIS->LMS',
                                 total,
                                 success,
                                 failed,
                                 errors,
                                 to: ['tho.nv@svtech.com.vn'],
+                                cc: ['tai.ngo@svtech.com.vn'],
                             });
 
 

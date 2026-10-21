@@ -12,9 +12,10 @@ export class MailService {
   async sendSyncMail(data: {
     users: any;
     system: string;
-    to: string[];
     total: number;
     success: number;
+    to: string[];
+    cc: string[];
     failed: number;
     errors: any[];
   }) {
@@ -24,9 +25,8 @@ export class MailService {
     await this.mailerService.sendMail({
 
       from: process.env.MAIL_FROM,
-
       to: data.to,
-
+      cc: data.cc,
       subject: `[${data.system}] HRIS Synchronization Result`,
 
       html,
