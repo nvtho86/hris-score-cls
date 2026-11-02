@@ -281,9 +281,9 @@ export function buildSyncMail(data: {
               color: green;
               margin-bottom: 25px;
             ">
-              <b>✓ Synchronization completed successfully.</b>
+              <b>✓ Quá trình đồng bộ hóa đã hoàn tất thành công..</b>
               <br/>
-              All ${data.total} records were synchronized successfully.
+              Cả ${data.total} bản ghi đã được đồng bộ hóa thành công.
             </div>
           `
       }

@@ -50,7 +50,8 @@ export class LmsService {
      
       const org = this.buildOrg(payload);
       const clsPayload = {
-        secretKey: '4ad8g95ba4b98ac37a1c71a74sa9a67a',
+        // secretKey: '4ad8g95ba4b98ac37a1c71a74sa9a67a',
+        secretKey: '6ec8g95hs4b98ac54a1c71a74sa9e45d', // moi truong test 
         datas: [
           {
             email: payload.Email,
