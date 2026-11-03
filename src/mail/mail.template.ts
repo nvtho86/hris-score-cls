@@ -21,14 +21,31 @@ export function buildSyncMail(data: {
       .replace(/'/g, '&#39;');
 
   // Hỗ trợ tên field theo PascalCase và camelCase
-  const getValue = (item: any, ...keys: string[]) => {
+  const getValue = (item: any, ...keys: string[]): any => {
     for (const key of keys) {
-      if (item?.[key] !== undefined && item[key] !== null) {
-        return escapeHtml(item[key]);
+      const value = item?.[key];
+
+      if (value !== undefined && value !== null) {
+        return value;
       }
     }
+
     return '';
   };
+
+  function formatDate(value: string | Date | null | undefined): string {
+    if (!value) return '';
+
+    const dateStr = value instanceof Date
+      ? value.toISOString().substring(0, 10)
+      : String(value).substring(0, 10);
+
+    const [year, month, day] = dateStr.split('-');
+
+    if (!year || !month || !day) return '';
+
+    return `${day}/${month}/${year}`;
+  }
 
 
   const tableHeaderStyle = `
@@ -96,8 +113,8 @@ export function buildSyncMail(data: {
             </td>
             <td style="border: 1px solid #ddd;">
               ${escapeHtml(new Date().toLocaleString('vi-VN', {
-                timeZone: 'Asia/Ho_Chi_Minh',
-              }))}
+    timeZone: 'Asia/Ho_Chi_Minh',
+  }))}
             </td>
           </tr>
         </table>
@@ -158,26 +175,28 @@ export function buildSyncMail(data: {
           ">
           <thead>
             <tr>
-              <th style="${tableHeaderStyle}">Employee Code</th>
-              <th style="${tableHeaderStyle}">FullName</th>
+              <th style="${tableHeaderStyle}">Code</th>
+              <th style="${tableHeaderStyle}">Email</th>
               <th style="${tableHeaderStyle}">Level</th>
               <th style="${tableHeaderStyle}">Job Title</th>
               <th style="${tableHeaderStyle}">Manager Name</th>
               <th style="${tableHeaderStyle}">Office</th>
               <th style="${tableHeaderStyle}">Department</th>
               <th style="${tableHeaderStyle}">Team</th>
+              <th style="${tableHeaderStyle}">Status</th>
+              <th style="${tableHeaderStyle}">Start date</th>
+              <th style="${tableHeaderStyle}">End date</th>
             </tr>
           </thead>
           <tbody>
-            ${
-              data.users?.length
-                ? data.users.map((user) => `
+            ${data.users?.length
+      ? data.users.map((user) => `
                     <tr>
                       <td style="${tableCellStyle}">
                         ${getValue(user, 'Code', 'code')}
                       </td>
                       <td style="${tableCellStyle}">
-                        ${getValue(user, 'FullName', 'fullname')}
+                        ${getValue(user, 'Email', 'email')}
                       </td>
                       <td style="${tableCellStyle}">
                         ${getValue(user, 'Level', 'level')}
@@ -197,9 +216,18 @@ export function buildSyncMail(data: {
                       <td style="${tableCellStyle}">
                       ${getValue(user, 'Branch', 'branch')}_${getValue(user, 'Department', 'department')}_${getValue(user, 'Team', 'team')}
                       </td>
+                      <td style="${tableCellStyle}">
+                        ${getValue(user, 'IsResigned') == 0 ? 'Active' : 'Inactive'}
+                      </td>
+                      <td style="${tableCellStyle}">
+                         ${formatDate(getValue(user, 'StartDate', 'start_date'))}
+                      </td>
+                      <td style="${tableCellStyle}">
+                         ${formatDate(getValue(user, 'EndDate', 'end_date'))}
+                      </td>
                     </tr>
                   `).join('')
-                : `
+      : `
                     <tr>
                       <td colspan="6" style="
                         ${tableCellStyle};
@@ -210,15 +238,14 @@ export function buildSyncMail(data: {
                       </td>
                     </tr>
                   `
-            }
+    }
           </tbody>
         </table>
       </div>
 
       <!-- Failed Records -->
-      ${
-        data.failed > 0
-          ? `
+      ${data.failed > 0
+      ? `
             <h3 style="color: #d9534f; margin-bottom: 10px;">
               Failed Records
             </h3>
@@ -238,9 +265,8 @@ export function buildSyncMail(data: {
                 </tr>
               </thead>
               <tbody>
-                ${
-                  data.errors?.length
-                    ? data.errors.map((item, index) => `
+                ${data.errors?.length
+        ? data.errors.map((item, index) => `
                         <tr>
                           <td style="${tableCellStyle}; text-align: center;">
                             ${index + 1}
@@ -260,7 +286,7 @@ export function buildSyncMail(data: {
                           </td>
                         </tr>
                       `).join('')
-                    : `
+        : `
                         <tr>
                           <td colspan="4" style="${tableCellStyle}">
                             Failed records were reported, but no error details
@@ -268,11 +294,11 @@ export function buildSyncMail(data: {
                           </td>
                         </tr>
                       `
-                }
+      }
               </tbody>
             </table>
           `
-          : `
+      : `
             <div style="
               padding: 15px;
               background-color: #f0f9f0;
@@ -286,7 +312,7 @@ export function buildSyncMail(data: {
               Cả ${data.total} bản ghi đã được đồng bộ hóa thành công.
             </div>
           `
-      }
+    }
 
       <!-- Footer -->
       <div style="

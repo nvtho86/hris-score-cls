@@ -102,7 +102,7 @@ export class KafkaConsumer implements OnModuleInit {
                                         `[SYNC] ${user.Code} -> LMS START`,
                                     );
                                     // SCORE -> LMS
-                                    await this.lmsService.upsertUser(user);
+                                    // await this.lmsService.upsertUser(user);
                                     console.log(
                                         `[SYNC] ${user.Code} -> LMS DONE`,
                                     );
@@ -139,7 +139,7 @@ export class KafkaConsumer implements OnModuleInit {
                                 failed,
                                 errors,
                                 to: ['tho.nv@svtech.com.vn'],
-                                cc: ['tai.ngo@svtech.com.vn'],
+                                cc: [''],
                             });
 
 
