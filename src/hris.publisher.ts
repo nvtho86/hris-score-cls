@@ -5,6 +5,8 @@ import { BaseEvent } from './events/base-event.interface';
 import { EmployeePayload } from './events/employee-old.event';
 import { StaffPayload } from './events/staff.event';
 import { UserPayload } from './events/user.event';
+import { RoutePayload } from './events/route.event';
+import { CoursePayload } from './events/course.event';
 
 @Injectable()
 export class HrisEventPublisher {
@@ -62,6 +64,41 @@ export class HrisEventPublisher {
     };
 
     this.kafka.emit('hris.user.updated', {
+      key: tenantId,
+      value: event,
+    });
+  }
+  async routeUpdated(route: RoutePayload, tenantId: string) {
+    const event: BaseEvent<RoutePayload> = {
+      event_id: randomUUID(),
+      event_type: 'ROUTE_UPDATED',
+      event_version: 'v1',
+      tenant_id: tenantId,
+      source_system: 'HRIS',
+      occurred_at: new Date().toISOString(),
+      trace_id: randomUUID(),
+      data: route,
+    };
+
+    this.kafka.emit('hris.route.updated', {
+      key: tenantId,
+      value: event,
+    });
+  }
+
+  async courseUpdated(course: CoursePayload, tenantId: string) {
+    const event: BaseEvent<CoursePayload> = {
+      event_id: randomUUID(),
+      event_type: 'COURSE_UPDATED',
+      event_version: 'v1',
+      tenant_id: tenantId,
+      source_system: 'HRIS',
+      occurred_at: new Date().toISOString(),
+      trace_id: randomUUID(),
+      data: course,
+    };
+
+    this.kafka.emit('hris.course.updated', {
       key: tenantId,
       value: event,
     });

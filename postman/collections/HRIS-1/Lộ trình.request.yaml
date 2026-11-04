@@ -1,0 +1,6 @@
+$kind: http-request
+url: https://hr.svtech.com.vn:8302/DataApi/api/Ext/GetListTraineeExternal
+method: POST
+headers:
+  X-HRIS-Api-Key: 0ef01a0b-486c-4235-acc1-bd66b56fc45f
+order: 1000

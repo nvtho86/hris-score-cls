@@ -3,42 +3,43 @@ import axios from 'axios';
 
 @Injectable()
 export class LmsRouteService {
-  
- 
+
+
   async upsertRoute(payload: any) {
     try {
-     
+
       const clsPayload = {
-        datas: 
-          {
-            secretKey: '4ad8g95ba4b98ac37a1c71a74sa9a67a',
-            Code: "",
-            Name: "",
-            TopicName: "",
-            StartDate: "",
-            EndDate: "",
-            
-          },
-        
+        SecretKey: process.env.CLOUDLMS_SECRET_KEY,
+        Code: payload.Code,
+        Name: payload.Name,
+        TopicName: payload.TopicName,
+        StartDate: payload.StartDate,
+        EndDate: payload.EndDate,
       };
 
+
       console.log(
-        '➡️ LMS Request:',
-        JSON.stringify(clsPayload, null, 2),
+        '➡️ LMS route Request:',
+        // JSON.stringify(clsPayload, null, 2),
       );
 
       const response = await axios.post(
-        // 'https://eapiv4.cloudlms.top/api/HRM/user/add-list',
         'https://eapiv4.cloudlms.top/api/Hrm/training-route/add',
         clsPayload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 30000,
+        },
       );
 
-      console.log('✅ LMS Response:', response.data);
+      console.log('✅ Route Response:', response.data);
 
       return response.data;
     } catch (error) {
       console.error(
-        '❌ LMS Error:',
+        '❌ ROUTE Error:',
         error.response?.data || error.message,
       );
 

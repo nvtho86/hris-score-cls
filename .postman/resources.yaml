@@ -1,0 +1,48 @@
+# Use this workspace to collaborate
+workspace:
+  id: ec5cb7aa-7fa5-4656-8075-b0a4b32dd042
+
+dependencies:
+  collections:
+    29337577-2853a129-8a98-4724-8c3f-05e86aeff7c7:
+      name: CLS PROD
+      path: ../postman/.dependencies/collections/CLS PROD
+    29337577-9de684bc-5811-4768-b8c9-ab837d98e3a8:
+      name: HRIS-SCORE-CLS- TEST
+      path: ../postman/.dependencies/collections/HRIS-SCORE-CLS- TEST
+    29337577-780abfa2-f369-431f-9a19-aae2730aaafd:
+      name: HRIS-SCORE-CLS PROD
+      path: ../postman/.dependencies/collections/HRIS-SCORE-CLS PROD
+    29337577-4d5f3859-5d87-4929-81c3-c86922907b88:
+      name: CORE-12524 - Verify FIX tren STAGING
+      path: ../postman/.dependencies/collections/CORE-12524 - Verify FIX tren STAGING
+    29337577-9b2523fc-dc49-4ace-a36f-29d23e60a77a:
+      name: UAT
+      path: ../postman/.dependencies/collections/UAT
+    29337577-fb910b62-af8e-4cba-88b8-2b5615248078:
+      name: authorize jira
+      path: ../postman/.dependencies/collections/authorize jira
+    29337577-42549d37-0a93-4af4-a7de-52d83f2546df:
+      name: Jira
+      path: ../postman/.dependencies/collections/Jira
+    29337577-4396e56a-1876-4ce8-afd1-c3b6e34c5d77:
+      name: INSIDE
+      path: ../postman/.dependencies/collections/INSIDE
+    29337577-bdc68e19-af8d-403a-9b5e-ef293a06590c:
+      name: GVL
+      path: ../postman/.dependencies/collections/GVL
+    29337577-c71e07f3-75f4-4ce3-a20a-f718b2a9bded:
+      name: Stagging
+      path: ../postman/.dependencies/collections/Stagging
+    29337577-e770303d-e2c1-474b-95ae-0954744237bc:
+      name: SVTECH
+      path: ../postman/.dependencies/collections/SVTECH
+    29337577-f585fb11-f566-48c6-99af-53235fa4f8cb:
+      name: CORE-12524 - OT overlap (UAT SVTECH)
+      path: ../postman/.dependencies/collections/CORE-12524 - OT overlap (UAT SVTECH)
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

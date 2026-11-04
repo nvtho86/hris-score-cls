@@ -1,0 +1,12 @@
+name: CLS
+values:
+  - key: secretKey_test
+    value: ''
+  - key: secretkey_svtech
+    value: ''
+  - key: seretKey_prod
+    value: ''
+  - key: cls_domain
+    value: ''
+  - key: secretKey
+    value: ''

@@ -3,41 +3,42 @@ import axios from 'axios';
 
 @Injectable()
 export class LmsCourseService {
-  
- 
+
+
   async upsertCourse(payload: any) {
     try {
-     
+
       const clsPayload = {
-        datas: 
-          {
-            secretKey: '4ad8g95ba4b98ac37a1c71a74sa9a67a',
-            about: "string",
-            code: "string",
-            formOfStudy: 0,
-            name: "string",
-            tag: "string",
-            thumbnail: "string",
-            topicId: 0,
-            videoUrl: "string",
-            credit: 0
-            
-          },
-        
+        secretKey: process.env.CLOUDLMS_SECRET_KEY,
+        about: payload.about,
+        code: payload.code,
+        formOfStudy: payload.formOfStudy,
+        name: payload.name,
+        tag: payload.tag,
+        thumbnail: payload.thumbnail,
+        topicId: payload.topicId,
+        videoUrl: payload.videoUrl,
+        credit: payload.credit
       };
 
       console.log(
-        '➡️ LMS Request:',
+        '➡️ Course Request:',
         JSON.stringify(clsPayload, null, 2),
       );
 
+
       const response = await axios.post(
-        // 'https://eapiv4.cloudlms.top/api/HRM/user/add-list',
         'https://eapiv4.cloudlms.top/api/HRM/v5/course/create',
         clsPayload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 30000,
+        },
       );
 
-      console.log('✅ LMS Response:', response.data);
+      console.log('✅ course Response:', response.data);
 
       return response.data;
     } catch (error) {

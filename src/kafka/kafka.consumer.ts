@@ -2,6 +2,8 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka } from 'kafkajs';
 import { LmsService } from '../lms/lms.service';
 import { MailService } from '../mail/mail.service';
+import { LmsRouteService } from '../lms/route.service';
+import { LmsCourseService } from '../lms/lms.course.service';
 import { handleEmployee } from './handlers/employee.handler';
 import { handleStaff } from './handlers/staff.handler';
 import { handleUser } from './handlers/user.handler';
@@ -14,6 +16,8 @@ export class KafkaConsumer implements OnModuleInit {
     constructor(
         private readonly lmsService: LmsService,
         private readonly mailService: MailService,
+        private readonly routeService: LmsRouteService,
+        private readonly lmsCourseService: LmsCourseService,
     ) { }
 
     async onModuleInit() {
@@ -39,6 +43,14 @@ export class KafkaConsumer implements OnModuleInit {
         });
         await consumer.subscribe({
             topic: 'hris.user.updated',
+            fromBeginning: true,
+        });
+        await consumer.subscribe({
+            topic: 'hris.route.updated',
+            fromBeginning: true,
+        });
+        await consumer.subscribe({
+            topic: 'hris.course.updated',
             fromBeginning: true,
         });
         await consumer.run({
@@ -74,6 +86,60 @@ export class KafkaConsumer implements OnModuleInit {
                             await handleTrainingClassResult(event);
                             break;
 
+                        case 'hris.course.updated':
+                            const courses = Array.isArray(event.payload)
+                                ? event.payload
+                                : [event.payload];
+
+                            for (const [index, course] of courses.entries()) {
+
+                                try {
+                                    console.log(
+                                        `[SYNC] ${course.Code} -> LMS START`,
+                                    );
+                                    // HRIS -> LMS
+                                    await this.lmsCourseService.upsertCourse(course);
+                                    console.log(
+                                        `[SYNC] ${course.Code} -> LMS DONE`,
+                                    );
+
+                                } catch (error: unknown) {
+                                    console.error(
+                                        `[SYNC] ${course.Code} FAILED`,
+                                        error,
+                                    );
+                                }
+                            }
+                            
+                            break;
+
+                        case 'hris.route.updated':
+                            const routes = Array.isArray(event.payload)
+                                ? event.payload
+                                : [event.payload];
+
+                            for (const [index, route] of routes.entries()) {
+
+                                try {
+                                    console.log(
+                                        `[SYNC] ${route.Code} -> LMS START`,
+                                    );
+                                    // SCORE -> LMS
+                                    await this.routeService.upsertRoute(route);
+                                    console.log(
+                                        `[SYNC] ${route.Code} -> LMS DONE`,
+                                    );
+
+                                } catch (error: unknown) {
+                                    console.error(
+                                        `[SYNC] ${route.Code} FAILED`,
+                                        error,
+                                    );
+                                }
+                            }
+
+                            break;
+
                         case 'hris.user.updated': {
                             const users = Array.isArray(event.payload)
                                 ? event.payload
@@ -91,18 +157,18 @@ export class KafkaConsumer implements OnModuleInit {
                                 );
 
                                 try {
-                                    
+
                                     // HRIS -> SCORE
                                     // await handleUser({
                                     //     ...event,
                                     //     payload: user,
                                     // });
-                                   
+
                                     console.log(
                                         `[SYNC] ${user.Code} -> LMS START`,
                                     );
                                     // SCORE -> LMS
-                                    // await this.lmsService.upsertUser(user);
+                                    await this.lmsService.upsertUser(user);
                                     console.log(
                                         `[SYNC] ${user.Code} -> LMS DONE`,
                                     );

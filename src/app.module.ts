@@ -25,6 +25,8 @@ import { KafkaProducer } from './kafka/kafka.producer';
 import { KafkaConsumer } from './kafka/kafka.consumer';
 import { HrisPoller } from './poller/hris.poller';
 import { LmsService } from './lms/lms.service';
+import { LmsRouteService } from './lms/route.service';
+import { LmsCourseService } from './lms/lms.course.service';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
 
@@ -60,6 +62,8 @@ import { MailModule } from './mail/mail.module';
     KafkaConsumer,
     HrisPoller,
     LmsService,
+    LmsRouteService,
+    LmsCourseService,
     MailService
   ],
 })
