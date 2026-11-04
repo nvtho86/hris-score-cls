@@ -163,21 +163,22 @@ export class HrisPoller implements OnModuleInit {
       },
     );
 
-   
-const data = response.data?.data ?? response.data?.Data ?? response.data;
+
+     const data = response.data.Result || [];
 
     // 2. Mapping data
-    const courses = data.map((item: any) => ({
+    const routes = data.map((item: any) => ({
       Code: item.SubjectCourseCode,
-      Name: item.SubjectModuleName,
+      Name: item.SubjectCourseName,
       TopicName: '',
       StartDate: '',
       EndDate: '',
     }));
 
-    // 3. Remove duplicate courses by ClassCode
+
+    // 3. Remove duplicate routes by ClassCode
     const uniqueRoutes = [
-      ...new Map(courses.map(item => [item.code, item])).values(),
+      ...new Map(routes.map(item => [item.Code, item])).values(),
     ];
 
     // const routes = [{
@@ -188,10 +189,10 @@ const data = response.data?.data ?? response.data?.Data ?? response.data;
     //   EndDate: '2027-08-31 12:00:00.0000000',
     // }]
 
-    // if (!users.length) {
-    //   console.log('[HRIS] No users to sync');
-    //   return;
-    // }
+    if (!uniqueRoutes.length) {
+      console.log('[HRIS] No users to sync');
+      return;
+    }
 
     await this.producer.emit('hris.route.updated', {
       event_id: uuid(),
