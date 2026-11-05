@@ -82,56 +82,42 @@ export class HrisPoller implements OnModuleInit {
   @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollCourse() {
     // 1. Call API HRIS
-    // const apiUrl =
-    //   'https://hr.svtech.com.vn:8302/DataApi/api/Ext/GetListTraineeExternal';
+    const apiUrl =
+      'https://hr.svtech.com.vn:8302/DataApi/api/Ext/GetListTraineeExternal';
 
-    // // 1. Call HRIS API bằng POST
-    // const response = await axios.post(
-    //   apiUrl,
-    //   null,
-    //   {
-    //     headers: {
-    //       'X-HRIS-Api-Key': process.env.HRIS_API_KEY,
-    //       'Content-Type': 'application/json',
-    //     },
-    //     timeout: 30000,
-    //   },
-    // );
+    // 1. Call HRIS API bằng POST
+    const response = await axios.post(
+      apiUrl,
+      null,
+      {
+        headers: {
+          'X-HRIS-Api-Key': process.env.HRIS_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      },
+    );
 
-    // // 2. Lấy danh sách dữ liệu
-    // const traineeList =
-    //   response.data?.data ??
-    //   response.data?.Data ??
-    //   response.data;
+    // 2. Lấy danh sách dữ liệu
+    const data = response.data.Result || [];
 
-    // if (!Array.isArray(traineeList)) {
-    //   throw new Error('HRIS response is not an array');
-    // }
+    // 3. Mapping dữ liệu sang LMS Course
+    const courses = data.map((item: any) => ({
+      about: item.ClassName || item.About || '',
+      code: item.ClassCode,
+      formOfStudy: item.TrainFormType ?? 0,
+      name: item.ClassName,
+      tag: item.Tag || '',
+      thumbnail: item.Thumbnail || '',
+      topicId: item.TopicId ?? 386,
+      videoUrl: item.VideoUrl || '',
+      credit: item.Credit ?? 0,
+    }));
 
-    // // 3. Mapping dữ liệu sang LMS Course
-    // const courses = traineeList.map((item: any) => ({
-    //   about: item.Description || item.About || '',
-    //   code: item.Code,
-    //   formOfStudy: item.FormOfStudy ?? 0,
-    //   name: item.Name,
-    //   tag: item.Tag || '',
-    //   thumbnail: item.Thumbnail || 'string',
-    //   topicId: item.TopicId ?? 386,
-    //   videoUrl: item.VideoUrl || 'string',
-    //   credit: item.Credit ?? 0,
-    // }));
-
-    const courses = [{
-      about: "Kỹ năng đàm phám",
-      code: "KH0001",
-      formOfStudy: 0,
-      name: "Kỹ năng đàm phán",
-      tag: "#gtkh",
-      thumbnail: "string",
-      topicId: 386,
-      videoUrl: "string",
-      credit: 0
-    }]
+     // 3. Remove duplicate routes by ClassCode
+    const uniqueCourses = [
+      ...new Map(courses.map(item => [item.code, item])).values(),
+    ];
 
     await this.producer.emit('hris.course.updated', {
       event_id: uuid(),
@@ -139,7 +125,7 @@ export class HrisPoller implements OnModuleInit {
       source: 'HRIS',
       tenant_id: 'tenant_02',
       occurred_at: new Date().toISOString(),
-      payload: courses,
+      payload: uniqueCourses,
     });
   }
 
