@@ -29,6 +29,7 @@ import { LmsRouteService } from './lms/route.service';
 import { LmsCourseService } from './lms/lms.course.service';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
+import { HrisApiModule } from './common/http/hris-api.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { MailModule } from './mail/mail.module';
     GroupsModule,
     TrainingModule,
     MailModule,
+    HrisApiModule,
     ScheduleModule.forRoot(), // ✅ CHỈ MODULE
     ClientsModule.register([
       {

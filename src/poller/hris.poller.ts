@@ -4,6 +4,7 @@ import { KafkaProducer } from '../kafka/kafka.producer';
 import { hrisDb } from '../database/hris.db';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
+import { HrisApiService } from '../common/http/hris-api.service';
 
 
 @Injectable()
@@ -12,7 +13,9 @@ export class HrisPoller implements OnModuleInit {
     await hrisDb.connect();
   }
 
-  constructor(private readonly producer: KafkaProducer) { }
+  constructor(
+    private readonly producer: KafkaProducer, 
+    private readonly hrisApiService: HrisApiService,) { }
 
   @Cron('*/30 * 18 * * *') // chạy 30s 1 lần
   async poll() {
@@ -82,20 +85,9 @@ export class HrisPoller implements OnModuleInit {
   @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollCourse() {
     // 1. Call API HRIS
-    const apiUrl =
-      'https://hr.svtech.com.vn:8302/DataApi/api/Ext/GetListTraineeExternal';
-
-    // 1. Call HRIS API bằng POST
-    const response = await axios.post(
-      apiUrl,
+     const response = await this.hrisApiService.post(
+      '/DataApi/api/Ext/GetListTraineeExternal',
       null,
-      {
-        headers: {
-          'X-HRIS-Api-Key': process.env.HRIS_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        timeout: 30000,
-      },
     );
 
     // 2. Lấy danh sách dữ liệu
@@ -114,7 +106,7 @@ export class HrisPoller implements OnModuleInit {
       credit: item.Credit ?? 0,
     }));
 
-     // 3. Remove duplicate routes by ClassCode
+    // 3. Remove duplicate routes by ClassCode
     const uniqueCourses = [
       ...new Map(courses.map(item => [item.code, item])).values(),
     ];
@@ -129,28 +121,19 @@ export class HrisPoller implements OnModuleInit {
     });
   }
 
-  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  // @Cron('*/30 * * * * *') // chạy 30s 1 lần , 
+  @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+
   async pollRouteCLS() {
 
     // 1. Call API HRIS
-    const apiUrl =
-      'https://hr.svtech.com.vn:8302/DataApi/api/Ext/GetListTraineeExternal';
-
-    // 1. Call HRIS API bằng POST
-    const response = await axios.post(
-      apiUrl,
+     const response = await this.hrisApiService.post(
+      '/DataApi/api/Ext/GetListTraineeExternal',
       null,
-      {
-        headers: {
-          'X-HRIS-Api-Key': process.env.HRIS_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        timeout: 30000,
-      },
     );
 
 
-     const data = response.data.Result || [];
+    const data = response.data.Result || [];
 
     // 2. Mapping data
     const routes = data.map((item: any) => ({
