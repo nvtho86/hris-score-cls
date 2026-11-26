@@ -2,8 +2,8 @@ import axios from 'axios';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class LmsService {
-  private readonly logger = new Logger(LmsService.name);
+export class LmsStudentService {
+  private readonly logger = new Logger(LmsStudentService.name);
 
   private readonly baseUrl = process.env.DOMAIN_CLS_TEST;
   private readonly secretKey = process.env.CLOUDLMS_SECRET_KEY;
@@ -38,7 +38,9 @@ export class LmsService {
         courseId,
         listEmail: emails,
       };
-
+      console.log("================LmsStudentService===================")
+      console.log(payload)
+      console.log("================LmsStudentService===================")
       // 3. Call CLS API
       const response = await axios.post(
         `${this.baseUrl}/api/HRM/course/add-list-user`,

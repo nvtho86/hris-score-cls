@@ -82,34 +82,59 @@ export class HrisPoller implements OnModuleInit {
     });
   }
 
-  @Cron('*/30 * * * * *') // chạy 30s 1 lần , @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
+  @Cron('*/60 * * * * *') // chạy 30s 1 lần , 
+  // @Cron('0 5 18 * * *') // chạy lúc 18h 1 lần mỗi ngày
   async pollCourse() {
     // 1. Call API HRIS
      const response = await this.hrisApiService.post(
-      '/DataApi/api/Ext/GetListTraineeExternal',
+      '/WebApi/api/Ext/GetListTraineeExternal',
       null,
     );
 
     // 2. Lấy danh sách dữ liệu
-    const data = response.data.Result || [];
+    const data = response.Result || [];
 
-    // 3. Mapping dữ liệu sang LMS Course
-    const courses = data.map((item: any) => ({
-      about: item.ClassName || item.About || '',
-      code: item.ClassCode,
-      formOfStudy: item.TrainFormType ?? 0,
-      name: item.ClassName,
-      tag: item.Tag || '',
-      thumbnail: item.Thumbnail || '',
-      topicId: item.TopicId ?? 386,
-      videoUrl: item.VideoUrl || '',
-      credit: item.Credit ?? 0,
-    }));
+    
 
-    // 3. Remove duplicate routes by ClassCode
-    const uniqueCourses = [
-      ...new Map(courses.map(item => [item.code, item])).values(),
-    ];
+    // 3. Mapping và grouping dữ liệu theo ClassCode
+    const courseMap = new Map<string, any>();
+
+    data.forEach((item: any) => {
+      const classCode = item.ClassCode;
+
+      if (!classCode) return;
+
+      if (!courseMap.has(classCode)) {
+        courseMap.set(classCode, {
+          about: item.ClassName || item.About || '',
+          code: classCode,
+          formOfStudy: Number(item.TrainFormType) || 0,
+          name: item.ClassName,
+          tag: item.Tag || '',
+          thumbnail: item.Thumbnail || '',
+          topicId: item.TopicId ?? 386,
+          videoUrl: item.VideoUrl || '',
+          credit: item.Credit ?? 0,
+          users: [],
+        });
+      }
+
+      // 4. Gom danh sách học viên theo khóa học
+      const course = courseMap.get(classCode);
+
+      if (item.Email) {
+        const email = item.Email.trim().toLowerCase();
+
+        // Tránh thêm trùng email trong cùng khóa học
+        if (!course.users.includes(email)) {
+          course.users.push(email);
+        }
+      }
+    });
+
+    // 3. Convert Map thành Array
+    const uniqueCourses = [...courseMap.values()];
+
 
     await this.producer.emit('hris.course.updated', {
       event_id: uuid(),

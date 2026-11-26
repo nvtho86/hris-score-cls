@@ -28,13 +28,6 @@ console.log('----------------------------------------------')
         Encrypt: true,                // Thường đi kèm với việc bật mã hóa
       },
 
-      // type: 'postgres',
-      // host: '192.168.37.11',
-      // port: 30100,
-      // username: 'postgres',
-      // password: 'postgres',
-      // database: 'hris_score',
-
       entities: [
         User,
         Group,

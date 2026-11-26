@@ -27,6 +27,7 @@ import { HrisPoller } from './poller/hris.poller';
 import { LmsService } from './lms/lms.service';
 import { LmsRouteService } from './lms/route.service';
 import { LmsCourseService } from './lms/lms.course.service';
+import { LmsStudentService } from './lms/add.student.service';
 import { MailService } from './mail/mail.service';
 import { MailModule } from './mail/mail.module';
 import { HrisApiModule } from './common/http/hris-api.module';
@@ -66,6 +67,7 @@ import { HrisApiModule } from './common/http/hris-api.module';
     LmsService,
     LmsRouteService,
     LmsCourseService,
+    LmsStudentService,
     MailService
   ],
 })
